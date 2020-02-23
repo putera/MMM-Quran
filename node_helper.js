@@ -27,7 +27,7 @@ module.exports = NodeHelper.create({
 
         var randomVerse = self.getRandomVerse(1, 6236);
         var quranArabicURL = "http://api.alquran.cloud/ayah/" + randomVerse + "/editions/ar";
-        var quranTranslationURL = "http://api.alquran.cloud/ayah/" + randomAyah + "/editions/" + payload.translationLang;
+        var quranTranslationURL = "http://api.alquran.cloud/ayah/" + randomVerse + "/editions/" + payload.translationLang;
 
         var textArabic = "";
         var textTranslation = "";
@@ -74,7 +74,7 @@ module.exports = NodeHelper.create({
             }
 
             var result = {
-                refNumber: randomAyah, 
+                refNumber: randomVerse, 
                 arabic: textArabic, 
                 translation: textTranslation, 
                 surahNameArabic: surahNameArabic, 
