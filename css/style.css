@@ -1,0 +1,15 @@
+@import url('http://fonts.googleapis.com/css?family=Lateef&display=swap');
+
+.txt-arabic {
+  color: white;
+  font-family:'Lateef', serif;
+  font-size:40px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 20px !important;
+}
+.txt-translation {
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+}
