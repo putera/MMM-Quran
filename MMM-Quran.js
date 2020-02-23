@@ -51,7 +51,7 @@ Module.register("MMM-Quran", {
     },
 
     getStyles: function() {
-        return ["css/style.css"];
+        return [this.file('css/style.css')];
     },
 
 	getDom: function() {
