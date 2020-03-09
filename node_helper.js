@@ -28,6 +28,7 @@ module.exports = NodeHelper.create({
         var randomVerse = self.getRandomVerse(1, 6236);
         var quranArabicURL = "http://api.alquran.cloud/ayah/" + randomVerse + "/editions/ar";
         var quranTranslationURL = "http://api.alquran.cloud/ayah/" + randomVerse + "/editions/" + payload.translationLang;
+        var quranAudio = "http://api.alquran.cloud/v1/ayah/" +  randomVerse + "/ar.alafasy";
 
         var textArabic = "";
         var textTranslation = "";
@@ -38,6 +39,7 @@ module.exports = NodeHelper.create({
         var numberInSurah = 1;
         var numberOfVerses = 1;
         var juzNumber = 1;
+        var audioURL = "";
 
         async.parallel({
             arabic: function (callback) {
@@ -49,13 +51,20 @@ module.exports = NodeHelper.create({
                     request({ url: quranTranslationURL, method: 'GET' }, function(error, response, body) {
                         callback(error, body);
                     });
+            },
+            quran_voice: function (callback) {
+                    request({ url: quranAudio, method: 'GET' }, function(error, response, body) {
+                        callback(error, body);
+                    });
             }
         }, function (error, result) {
             if (error) {
                 console.log("[MMM-Quran] : " + error);
             }
 
-            var resultArabic = JSON.parse(result.arabic), resultTranslation = JSON.parse(result.translation);
+            var resultArabic = JSON.parse(result.arabic), 
+            resultTranslation = JSON.parse(result.translation), 
+            resultAudio = JSON.parse(result.quran_voice);
 
             if (resultArabic && resultArabic.data[0])
             {
@@ -72,6 +81,10 @@ module.exports = NodeHelper.create({
             if (resultTranslation && resultTranslation.data[0]) {
                 textTranslation = resultTranslation.data[0].text;
             }
+            
+            if (resultAudio) {
+                audioURL = resultAudio.data.audioSecondary[0];
+            }
 
             var result = {
                 refNumber: randomVerse, 
@@ -83,9 +96,10 @@ module.exports = NodeHelper.create({
                 surahNumber: surahNumber, 
                 numberInSurah: numberInSurah, 
                 numberOfVerses: numberOfVerses, 
-                juzNumber: juzNumber
+                juzNumber: juzNumber,
+                audio: audioURL
             };
-
+            
             self.sendSocketNotification('QURAN_VERSE', result);
         });
 	},
